@@ -28,8 +28,5 @@
 </code>
 
 
-<h2>Issues & Contribution</h2>
-<p>If you encounter any issues or would like to contribute to the project, please open a pull request or issue on the project's repository.</p>
-
 </body>
 </html>
