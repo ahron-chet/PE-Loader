@@ -225,10 +225,24 @@ bool LoadAndExecute(const wchar_t* fileName) {
     return true;
 }
 
-int main() {
-    const wchar_t* fileName = L"< Exe Path >";
-    if (!LoadAndExecute(fileName)) {
+int main(int argc, char* argv[]) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <path_to_exe_file>" << std::endl;
         return 1;
     }
+
+    std::string s = argv[1];
+    std::wstring ws(s.begin(), s.end());
+    const wchar_t* fileName = ws.c_str();
+
+    if (!LoadAndExecute(fileName)) {
+        delete[] fileName;
+        return 1;
+    }
+
+    delete[] fileName;
     return 0;
 }
+
+
+
