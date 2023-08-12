@@ -22,7 +22,6 @@
 </ul>
 
 <h2>Usage</h2>
-<p>Make sure you have the required dependencies installed and simply run the project. The loader will take care of reading, mapping, and executing the PE.</p>
 
 <code>
  PE-Loader.exe pathTo.exe
