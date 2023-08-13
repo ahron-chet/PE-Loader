@@ -41,16 +41,19 @@ void GetHeaders(PVOID pexeFile, PIMAGE_DOS_HEADER* pDOSHeader, PIMAGE_NT_HEADERS
     *pNTHeaders = (PIMAGE_NT_HEADERS64)((LPBYTE)pexeFile + (*pDOSHeader)->e_lfanew);
 }
 
+
 PVOID GetFixedBaseAddress(PIMAGE_NT_HEADERS64 pNTHeaders) {
     std::cout << "Size Of image: " << std::hex << pNTHeaders->OptionalHeader.SizeOfImage << "\n";
 
     return VirtualAlloc(0, pNTHeaders->OptionalHeader.SizeOfImage, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 }
 
+
 void WriteHeaders(PVOID pExeFile, PVOID baseAddress, PIMAGE_NT_HEADERS64 pNTHeaders) {
     std::cout << "Size of headers: " << std::hex << pNTHeaders->OptionalHeader.SizeOfHeaders << "\n";
     memcpy(baseAddress, pExeFile, pNTHeaders->OptionalHeader.SizeOfHeaders);
 }
+
 
 
 bool FixImports(PIMAGE_NT_HEADERS64 pNTHeaders, PVOID baseAdress) {
@@ -119,6 +122,9 @@ void WriteSections(PVOID baseAdress, PVOID pExeFile, PIMAGE_DOS_HEADER pDOSHeade
         std::cout << "\n";
     }
 }
+
+
+
 void BaseRelocation(PVOID baseAdress, PIMAGE_NT_HEADERS64 pNTHeaders) {
     LONG64 delta = (LONG64)baseAdress - (LONG64)pNTHeaders->OptionalHeader.ImageBase;
 
@@ -155,6 +161,7 @@ void BaseRelocation(PVOID baseAdress, PIMAGE_NT_HEADERS64 pNTHeaders) {
         reloc = *(IMAGE_BASE_RELOCATION*)pFirstReloc;
     }
 }
+
 
 bool LoadAndExecute(const wchar_t* fileName) {
     DWORD fileSize;
@@ -197,6 +204,8 @@ bool LoadAndExecute(const wchar_t* fileName) {
 
     BaseRelocation(baseAddress, pNTHeaders);
 
+    std::cout << "Creating thread in: " << std::hex << (LPTHREAD_START_ROUTINE)((LPBYTE)baseAddress + pNTHeaders->OptionalHeader.AddressOfEntryPoint) << "\n";
+
     DWORD threadID;
     HANDLE threadHandle = CreateThread(
         NULL,
@@ -214,6 +223,8 @@ bool LoadAndExecute(const wchar_t* fileName) {
         VirtualFree(baseAddress, 0, MEM_RELEASE);
         return false;
     }
+
+    std::cout << "Thread Created with ID: " << threadID << "\n";
 
     WaitForSingleObject(threadHandle, INFINITE);
     CloseHandle(threadHandle);
