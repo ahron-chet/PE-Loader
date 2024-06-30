@@ -13,7 +13,7 @@
 
 <h2>Features</h2>
 <ul>
-    <li>Reads the PE file into memory.</li>
+    <li>Reads the PE file into memory. </li>
     <li>Allocates necessary memory for the PE file execution.</li>
     <li>Maps the sections of the PE to the allocated memory.</li>
     <li>Performs base relocations.</li>
