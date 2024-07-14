@@ -23,8 +23,7 @@
 
 <h2>Usage</h2>
 
-<code>
- PE-Loader.exe pathTo.exe
+<code>PE-Loader.exe pathTo.exe
 </code>
 
 
